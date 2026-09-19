@@ -99,13 +99,10 @@
 #
 #
 # ═══════════════════════════════════════════════════════════════
-
-
 # ───────────────────────────────────────────────────────────────
 # 预设模板
 # ───────────────────────────────────────────────────────────────
 presets:
-
   # ───────────────────────────────────────────────────────────
   # 1️⃣ always_on - 全天候监控
   #
@@ -118,7 +115,6 @@ presets:
   always_on:
     name: "全天监控"
     description: "全天候监控，有新增立即推送。适合重度用户。"
-
     # 默认配置 ── 不在任何时间段内时，使用这组开关
     # 因为这个模式没有划分时间段，所以 default 就是全天的行为
     default:
@@ -130,7 +126,6 @@ presets:
       once:                        # 限制每个时间段内只执行一次
         analyze: false             #   不限制分析次数
         push: false                #   不限制推送次数
-
     # 没有定义任何时间段，全天都走 default
     #
     # 语法提示：{} 是 YAML 的「空字典」写法，表示里面没有任何内容。
@@ -147,8 +142,6 @@ presets:
       5: "all_day"                 # 周五
       6: "all_day"                 # 周六
       7: "all_day"                 # 周日
-
-
   # ───────────────────────────────────────────────────────────
   # 2️⃣ morning_evening - 早晚汇总（推荐）
   #
@@ -161,7 +154,6 @@ presets:
   morning_evening:
     name: "早晚汇总"
     description: "全天推送 + 晚间当日汇总。适合大多数人。"
-
     # 默认配置 ── 不命中任何时间段时的行为
     default:
       collect: true                # 始终采集
@@ -175,7 +167,6 @@ presets:
       once:
         analyze: false             # 不限制分析次数
         push: false                # 不限制推送次数
-
     # 时间段定义 ── 只有晚间汇总需要特殊处理
     periods:
       evening_summary:
@@ -191,12 +182,10 @@ presets:
         once:
           analyze: true            # 窗口内只分析一次
           push: true               # 窗口内只推送一次
-
     # 日计划 ── 把时间段组装成一天的安排
     day_plans:
       all_day:
         periods: ["evening_summary"]
-
     # 周映射 ── 每天用哪个日计划（1=周一 ... 7=周日）
     week_map:
       1: "all_day"
@@ -206,8 +195,6 @@ presets:
       5: "all_day"
       6: "all_day"
       7: "all_day"
-
-
   # ───────────────────────────────────────────────────────────
   # 3️⃣ office_hours - 办公时间推送
   #
@@ -223,7 +210,6 @@ presets:
   office_hours:
     name: "办公时间"
     description: "工作日三段式推送（到岗→午间→收工），周末增量自由推送。"
-
     default:
       collect: true
       analyze: false
@@ -233,7 +219,6 @@ presets:
       once:
         analyze: true              # 每个时段只分析一次
         push: true                 # 每个时段只推送一次
-
     periods:
       morning_briefing:
         name: "到岗速览"
@@ -244,7 +229,6 @@ presets:
         push: true                 # 到岗后看当前热点
         report_mode: "current"     # 当前在榜的新闻
         # once 继承 default（analyze: true, push: true）→ 只推/分析一次
-
       noon_update:
         name: "午间热点"
         start: "13:00"
@@ -253,7 +237,6 @@ presets:
         report_mode: "current"     # 当前在榜的新闻
         # analyze 继承 default: false → 午间不做 AI 分析，节省 API
         # once 继承 default（push: true）→ 只推一次
-
       closing_summary:
         name: "收工汇总"
         start: "17:00"
@@ -263,7 +246,6 @@ presets:
         push: true                 # 下班前推送当日完整汇总
         report_mode: "daily"       # 当日全部新闻汇总
         # once 继承 default（analyze: true, push: true）→ 只推/分析一次
-
       weekend_free:
         name: "周末自由"
         start: "08:00"
@@ -274,14 +256,12 @@ presets:
         once:
           analyze: false           # 不限制分析次数
           push: false              # 不限制推送次数
-
     # 工作日使用三段式推送；周末使用增量自由模式
     day_plans:
       workday:
         periods: ["morning_briefing", "noon_update", "closing_summary"]
       weekend:
         periods: ["weekend_free"]  # 周末：有新增就推，不打扰睡眠
-
     week_map:
       1: "workday"                 # 周一 → 工作日计划
       2: "workday"
@@ -290,8 +270,6 @@ presets:
       5: "workday"
       6: "weekend"                 # 周六 → 周末计划
       7: "weekend"                 # 周日 → 周末计划
-
-
   # ───────────────────────────────────────────────────────────
   # 4️⃣ night_owl - 夜猫子模式
   #
@@ -305,7 +283,6 @@ presets:
   night_owl:
     name: "夜猫子模式"
     description: "午后速览 + 深夜全天汇总。适合夜间工作者、海外时差用户。"
-
     default:
       collect: true
       analyze: false
@@ -315,7 +292,6 @@ presets:
       once:
         analyze: true              # 每个时段只分析一次
         push: true                 # 每个时段只推送一次
-
     periods:
       afternoon_peek:
         name: "午后速览"
@@ -326,7 +302,6 @@ presets:
         push: true                 # 午后看当前热点
         report_mode: "current"     # 当前在榜的新闻
         # once 继承 default（analyze: true, push: true）→ 只推/分析一次
-
       late_night:
         name: "深夜汇总"
         start: "22:00"
@@ -336,7 +311,6 @@ presets:
         push: true                 # 深夜推送当日完整汇总
         report_mode: "daily"       # 当日全部新闻汇总
         # once 继承 default（analyze: true, push: true）→ 只推/分析一次
-
     day_plans:
       all_day:
         periods: ["afternoon_peek", "late_night"]
@@ -348,8 +322,6 @@ presets:
       5: "all_day"
       6: "all_day"
       7: "all_day"
-
-
 # ═══════════════════════════════════════════════════════════════
 #
 # 5️⃣ 自定义模式
@@ -380,24 +352,9 @@ presets:
 #   积木块里没写的字段，也会自动回退到默认配置。
 #
 #
-# 下面是一个完整的自定义示例，工作日和周末使用不同的时间段安排：
-#
-#   工作日时间段:
-#     深夜静默 23:00-06:00（跨日）：采集 ✓ | 分析 ✓ | 推送 ✗
-#     工作日早间 08:00-10:00：推送 ✓ | incremental
-#     晚间汇总 19:00-21:00：推送 ✓ | 分析 ✓ | daily
-#     其余时间走默认配置（静默采集）
-#
-#   周末时间段:
-#     深夜静默 23:00-06:00（跨日）：采集 ✓ | 分析 ✓ | 推送 ✗
-#     周末早间 10:00-12:00：推送 ✓ | daily
-#     晚间汇总 19:00-21:00：推送 ✓ | 分析 ✓ | daily
-#     其余时间走默认配置（静默采集）
-
 custom:
-  name: "自定义"
-  description: "完全自由定义时间段、日计划和周映射。"
-
+  name: "daily_morning_only"
+  description: "每日早间单次推送，其余时间静默采集不推送。"
   # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   # 默认配置
   #
@@ -417,143 +374,44 @@ custom:
                                    #   daily       → 当日所有新闻的汇总
                                    #   current     → 当前在榜的新闻
                                    #   incremental → 只推送新增内容
-
-                                   
-    # frequency_file: "general.txt"
-                                   # 关键词文件（可选，位于 config/custom/keyword/）
-                                   # 不填则使用默认的 config/frequency_words.txt
-                                   # 时间段（period）中也可以设置此字段来覆盖默认值
-                                   # 例如晚间汇总用科技词库：
-                                   #   frequency_file: "tech.txt"
-                                   # 注意：仅在 filter_method 为 keyword 时生效
-                                   
-    # interests_file: "finance.txt"
-                                   # AI 兴趣描述文件（可选，位于 config/custom/ai/）
-                                   # 不填则使用默认的 config/ai_interests.txt
-                                   # 时间段（period）中也可以设置此字段来覆盖默认值
-                                   # 例如晚间汇总用金融兴趣：
-                                   #   interests_file: "finance.txt"
-                                   # 注意：仅在 filter_method 为 ai 时生效
-
-    # filter_method: "keyword"     # 筛选策略（可选: keyword | ai）
-                                   # 不填则使用全局 config.yaml 的 filter.method
-                                   # 时间段（period）中也可以设置此字段来覆盖
-                                   # 例如晚间汇总用 AI 筛选：
-                                   #   filter_method: "ai"
     once:
       analyze: true                # 该时间段内只分析一次（省 API）
       push: true                   # 该时间段内只推送一次（省打扰）
-
-
   # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   # 第 1 步：定义积木块（时间段）
-  #
-  # 每个时间段有一个唯一的 key（如 deep_quiet），
-  # 以及 start / end 表示生效的时间范围。
-  #
-  # 只需要写「和 default 不同的字段」，其余自动继承 default。
-  # 例如 weekday_morning 没写 collect，就会继承 default 的 collect: true。
-  #
-  # 提示：如果 start > end（如 22:00 → 07:00），
-  #       系统会自动识别为跨越午夜的时间段。
   # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   periods:
-
-    deep_quiet:
-      name: "深夜静默"
-      start: "23:00"
-      end: "06:00"                 # 23:00 → 次日 06:00（跨日时间段）
-      # frequency_file: "xxx.txt"               # 关键词文件（可选，位于 config/custom/keyword/）
-      # interests_file: "xxx.txt"                # AI 兴趣文件（可选，位于 config/custom/ai/）
-      # filter_method: "keyword"                # 筛选策略（可选: keyword | ai，不填用全局 filter.method）
-      collect: true                # 夜间继续采集数据
-      analyze: true                # 夜间可以跑 AI 分析（反正不推送）
-      push: false                  # 深夜不推送，避免打扰
-
-    weekday_morning:
-      name: "工作日早间"
+    morning_push:
+      name: "早间推送窗口"
       start: "08:00"
-      end: "10:00"                 # 跨度 2h，留足触发裕量
-      # frequency_file: "xxx.txt"               # 关键词文件（可选，位于 config/custom/keyword/）
-      # interests_file: "xxx.txt"                # AI 兴趣文件（可选，位于 config/custom/ai/）
-      # filter_method: "keyword"                # 筛选策略（可选: keyword | ai，不填用全局 filter.method）
-      push: true                   # 早上推送一次
-      report_mode: "incremental"   # 只推新增内容
-      # once 继承 default（push: true）→ 窗口内只推一次
-
-    weekend_morning:
-      name: "周末早间"
-      start: "10:00"
-      end: "12:00"                 # 跨度 2h
-      # frequency_file: "xxx.txt"               # 关键词文件（可选，位于 config/custom/keyword/）
-      # interests_file: "xxx.txt"                # AI 兴趣文件（可选，位于 config/custom/ai/）
-      # filter_method: "keyword"                # 筛选策略（可选: keyword | ai，不填用全局 filter.method）
+      end: "09:00"
+      analyze: true                # 早间推送时执行AI分析
+      ai_mode: "daily"             # 生成全天汇总报告
       push: true
-      report_mode: "daily"         # 周末看全天汇总
-      # once 继承 default（push: true）→ 窗口内只推一次
-
-    evening_summary:
-      name: "晚间汇总"
-      start: "19:00"
-      end: "21:00"
-      # frequency_file: "xxx.txt"               # 关键词文件（可选，位于 config/custom/keyword/）
-      # interests_file: "xxx.txt"                # AI 兴趣文件（可选，位于 config/custom/ai/）
-      # filter_method: "keyword"                # 筛选策略（可选: keyword | ai，不填用全局 filter.method）
-      analyze: true                # 晚间做 AI 分析
-      ai_mode: "daily"             # AI 也分析全天内容
-      push: true                   # 晚间推送
-      report_mode: "daily"         # 当日全部新闻汇总
-      # once 继承 default（analyze: true, push: true）→ 只分析/推送一次
-
-
+      report_mode: "daily"
+      once:
+        analyze: true
+        push: true                 # 窗口内最多推送一次
   # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   # 第 2 步：把积木块拼成日计划
-  #
-  # 把上面定义的时间段组合成一天的安排。
-  # 你可以定义多个日计划（如 workday 和 weekend），
-  # 然后在第 3 步的 week_map 中分配给不同的星期。
   # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   day_plans:
-    workday:                       # 工作日计划
-      periods: ["deep_quiet", "weekday_morning", "evening_summary"]
-    weekend:                       # 周末计划（用 weekend_morning 替换 weekday_morning）
-      periods: ["deep_quiet", "weekend_morning", "evening_summary"]
-
-
+    every_day:
+      periods: ["morning_push"]
   # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   # 第 3 步：指定每天用哪个日计划
-  #
   # 1=周一  2=周二  3=周三  4=周四  5=周五  6=周六  7=周日
   # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   week_map:
-    1: "workday"                   # 周一 → 工作日计划
-    2: "workday"                   # 周二
-    3: "workday"                   # 周三
-    4: "workday"                   # 周四
-    5: "workday"                   # 周五
-    6: "weekend"                   # 周六 → 周末计划
-    7: "weekend"                   # 周日
-
-
+    1: "every_day"
+    2: "every_day"
+    3: "every_day"
+    4: "every_day"
+    5: "every_day"
+    6: "every_day"
+    7: "every_day"
   # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   # 冲突策略（一般不用改）
-  #
-  # 什么是「冲突」？
-  #   如果你的两个时间段有重叠（比如 A 是 08:00-12:00，B 是 10:00-14:00），
-  #   那么 10:00-12:00 这段时间就同时属于 A 和 B，产生了冲突。
-  #   此时程序需要知道：到底听谁的？
-  #
-  # 两种处理方式：
-  #
-  #   error_on_overlap（推荐）
-  #     直接报错，提醒你去修改配置。
-  #     适合大多数人 —— 时间段重叠通常是写错了，报错能及时发现。
-  #
-  #   last_wins
-  #     day_plans 的 periods 列表中，写在后面的优先。
-  #     比如 periods: ["A", "B"]，重叠时 B 生效。
-  #     适合场景：你想用一个大范围时间段打底，再用后面的小范围覆盖。
-  #
   # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   overlap:
     policy: "error_on_overlap"
